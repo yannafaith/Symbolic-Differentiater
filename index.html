@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Polynomial Differentiation</title>
+    <link rel="stylesheet" href="style.css"/>
+
+    <script src="mathJax/MathJax.js">
+
+        MathJax.Hub.Config( {
+            extensions: [ "tex2jax.js" ],
+            jax: [ "input/TeX","output/HTML-CSS" ],
+            tex2jax: { inlineMath: [ [ "$", "$" ], [ "\\(","\\)" ] ] }
+        } );
+
+        (function () {
+        let QUEUE = MathJax.Hub.queue; 
+        let math = null;
+
+        QUEUE.Push(function () {
+            math = MathJax.Hub.getAllJax( "MathOutput" )[ 0 ];
+        });
+
+        window.UpdateMath = function ( TeX ) {
+            QUEUE.Push([ "Text", math, "\\displaystyle{"+TeX+"}" ]);
+        }
+        })();
+
+    </script>
+    
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <section class="main">
+        <h1> Symbolic Polynomial Differentiation</h1>
+        <input id="MathInput" onchange="standardize( this.value )" placeholder="enter your equation"/>
+        <p id="MathOutput">${}$ </p>
+    </section>
+</body>
+
+</html>
