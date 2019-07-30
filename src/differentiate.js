@@ -40,12 +40,12 @@ function differentiate( terms, operand_obj, vars ) {
 
     terms.forEach( term  => {
 
-        if ( isNaN( term[ 0 ] ) ) {
+        if ( isNaN( term[ 0 ] ) && term[ 0 ] != '.') {
             term = "1" + term; 
         } else if (!isNaN( term) ) {
-            term = term + "^"
-        }
-        term
+            term = term + "^";
+        } else term = "0" + term;
+
         if ( vars.includes( term[ term.length - 1 ] ) ) {
             term = term + "^1";
         } 
@@ -81,7 +81,7 @@ function differentiate( terms, operand_obj, vars ) {
     res
     res = res.replace( /- NaNx\^{NaN}|[\+] NaNx\^{NaN}|NaNx\^{NaN}|\x78\x5E\x7B\x30\x7D|- NaN.\^{NaN}|[\+] NaN.\^{NaN}/g, '' );
     res
-    // return UpdateMath( res );
+    return UpdateMath( res );
 }
 
-standardize("3.5x^3.1 + 6.7y^3");
+//standardize(".3x^3 + 4.7y^3");
