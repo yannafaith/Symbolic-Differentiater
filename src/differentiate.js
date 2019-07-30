@@ -21,11 +21,12 @@ function standardize ( equation ) {
             prev = i + 1; 
         }
 
-        if ( isNaN( equation[ i ] ) && !operands.includes( equation[ i ] ) && equation[ i ] != '^' ) {
+        if ( isNaN( equation[ i ] ) && !operands.includes( equation[ i ] ) && equation[ i ] != '^' && equation[ i ] != '.') {
             vars.push( equation[ i ] );
         }
 
     }
+    vars
     splits.push( equation.slice( prev ) );
     return differentiate( splits, operand_obj, vars );
 }
@@ -39,13 +40,12 @@ function differentiate( terms, operand_obj, vars ) {
 
     terms.forEach( term  => {
 
-        // handles constant terms (but only x right now in replace function)
         if ( isNaN( term[ 0 ] ) ) {
             term = "1" + term; 
         } else if (!isNaN( term) ) {
             term = term + "^"
         }
-
+        term
         if ( vars.includes( term[ term.length - 1 ] ) ) {
             term = term + "^1";
         } 
@@ -56,8 +56,15 @@ function differentiate( terms, operand_obj, vars ) {
         coeff = term.slice( 0, exp );
         exp = term.slice( exp + 2, term.length );
 
+        coeff
+        exp
+
         let resCoeff = String( parseFloat( coeff ) * parseFloat( exp ) );
         let resExp = String( parseFloat( exp ) - 1 );
+
+        resCoeff
+        resExp
+        vars
 
         if ( count < operands.length ) {
             operand = operands[ count ] + " ";
@@ -71,9 +78,10 @@ function differentiate( terms, operand_obj, vars ) {
     
     });
 
+    res
     res = res.replace( /- NaNx\^{NaN}|[\+] NaNx\^{NaN}|NaNx\^{NaN}|\x78\x5E\x7B\x30\x7D|- NaN.\^{NaN}|[\+] NaN.\^{NaN}/g, '' );
-
-    return UpdateMath( res );
+    res
+    // return UpdateMath( res );
 }
 
-//standardize("3.5x^3.1 + 67 - 8");
+standardize("3.5x^3.1 + 6.7y^3");
