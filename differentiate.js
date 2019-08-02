@@ -34,7 +34,7 @@ function differentiate( terms, operand_obj, vars ) {
 
         if ( isNaN( term[ 0 ] ) && term[ 0 ] != '.') {
             term = "1" + term; 
-        } else if (!isNaN( term) ) {
+        } else if ( ! isNaN( term ) ) {
             term = term + "^";
         } else term = "0" + term;
 
@@ -71,36 +71,38 @@ function differentiate( terms, operand_obj, vars ) {
     
     });
 
-    res = res.replace( /- NaNx\^{NaN}|[\+] NaNx\^{NaN}|NaNx\^{NaN}|\x78\x5E\x7B\x30\x7D|- NaN.\^{NaN}|[\+] NaN.\^{NaN}/g, '' );
+    let regex = ( /[\+] NaNundefined\^{NaN}|- NaNundefined\^{NaN}|- NaNx\^{NaN}|[\+] NaNx\^{NaN}|NaNx\^{NaN}|\x78\x5E\x7B\x30\x7D|- NaN.\^{NaN}|[\+] NaN.\^{NaN}/g );
+
+    res = res.replace( regex , '' );
+
     UpdateMath( res );
     draw( res );
 }
 
 function draw ( expression ) {
     try {
-        
-      // compile the expression once
-      expression = expression.replace( /{|}/g, '' );
 
+      expression = expression.replace( /{|}/g, '' );
       const expr = math.compile( expression );
 
-      // evaluate the expression repeatedly for different values of x
-      const xValues = math.range(-10, 10, 0.5).toArray()
-      const yValues = xValues.map(function (x) {
-        return expr.evaluate({x: x})
-      })
+      const xValues = math.range( -10, 10, 0.5 ).toArray();
+      const yValues = xValues.map( function ( x ) {
+        return expr.evaluate( { x: x } );
+      });
 
-      // render the plot using plotly
       const trace1 = {
         x: xValues,
         y: yValues,
         type: 'scatter'
-      }
-      const data = [trace1]
-      Plotly.newPlot('plot', data)
+      };
+
+      const data = [ trace1 ];
+      Plotly.newPlot( 'plot', data );
+
     }
-    catch (err) {
-      console.error(err)
-      alert(err)
+
+    catch ( err ) {
+      console.error( err );
+      alert( err );
     }
 }
