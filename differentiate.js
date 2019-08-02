@@ -1,10 +1,3 @@
-/*
-
-bugs as of 7/30/2019
-- doesn't handle constants or decimals anymore
-
-*/
-
 function standardize ( equation ) {
     equation = equation.replace( / /g, '' );
     const operands = [ '*', '-', '+', '/' ];
@@ -26,13 +19,12 @@ function standardize ( equation ) {
         }
 
     }
-    vars
+
     splits.push( equation.slice( prev ) );
     return differentiate( splits, operand_obj, vars );
 }
 
-function differentiate( terms, operand_obj, vars ) {
-    terms 
+function differentiate( terms, operand_obj, vars ) { 
     let res = "";
     let count = 0;
     const operands = Object.values( operand_obj );
@@ -56,15 +48,8 @@ function differentiate( terms, operand_obj, vars ) {
         coeff = term.slice( 0, exp );
         exp = term.slice( exp + 2, term.length );
 
-        coeff
-        exp
-
-        let resCoeff = String( parseFloat( coeff ) * parseFloat( exp ) );
-        let resExp = String( parseFloat( exp ) - 1 );
-
-        resCoeff
-        resExp
-        vars
+        let resCoeff = ( parseFloat( coeff ) * parseFloat( exp ) );
+        let resExp = ( parseFloat( exp ) - 1 );
 
         if ( count < operands.length ) {
             operand = operands[ count ] + " ";
@@ -73,15 +58,49 @@ function differentiate( terms, operand_obj, vars ) {
             operand = " ";
         } 
 
+        if ( ! Number.isInteger( resCoeff ) ) {
+            resCoeff = resCoeff.toFixed(3);
+        } 
+
+        if ( ! Number.isInteger( resExp ) ) {
+            resExp = resExp.toFixed(3);
+        } 
+
         res += resCoeff + vars[ count ] + "^" + `{${ resExp }}` + " " + operand;
         count += 1;  
     
     });
 
-    res
     res = res.replace( /- NaNx\^{NaN}|[\+] NaNx\^{NaN}|NaNx\^{NaN}|\x78\x5E\x7B\x30\x7D|- NaN.\^{NaN}|[\+] NaN.\^{NaN}/g, '' );
-    res
-    return UpdateMath( res );
+    UpdateMath( res );
+    draw( res );
 }
 
-//standardize(".3x^3 + 4.7y^3");
+function draw ( expression ) {
+    try {
+        
+      // compile the expression once
+      expression = expression.replace( /{|}/g, '' );
+
+      const expr = math.compile( expression );
+
+      // evaluate the expression repeatedly for different values of x
+      const xValues = math.range(-10, 10, 0.5).toArray()
+      const yValues = xValues.map(function (x) {
+        return expr.evaluate({x: x})
+      })
+
+      // render the plot using plotly
+      const trace1 = {
+        x: xValues,
+        y: yValues,
+        type: 'scatter'
+      }
+      const data = [trace1]
+      Plotly.newPlot('plot', data)
+    }
+    catch (err) {
+      console.error(err)
+      alert(err)
+    }
+}

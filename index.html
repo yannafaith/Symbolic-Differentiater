@@ -30,7 +30,8 @@
     </script>
 
     <script src="differentiate.js"></script>
-    <script src="node_modules/chart.js/dist/Chart.js"></script>
+    <script src="https://unpkg.com/mathjs@6.0.3/dist/math.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
 
 </head>
 
@@ -43,10 +44,8 @@
     </section>
 
     <section class="chart">
-        <canvas id="myChart" width="400" height="150"></canvas>
+        <div id="plot"></div>    
     </section>
-
-    <script src="chart.js"></script>
     
 </body>
 

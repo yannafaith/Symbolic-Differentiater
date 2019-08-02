@@ -1,4 +1,0 @@
-[build]
-base = "src"
-publish = "src/"
-command = "yarn"

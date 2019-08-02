@@ -1,9 +1,0 @@
-{
-  "name": "src",
-  "dependencies": {
-    "chart.js": "^2.8.0"
-  },
-  "scripts": {
-    "build": "yarn build"
-  }
-}
